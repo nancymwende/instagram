@@ -179,3 +179,33 @@ body {
 			padding: 10px;
 			margin-top: 10px;	
 		}
+		
+.status .status-item .status-div img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.status .status-item .status-div {
+    height: 55px;
+    width: 55px;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 0 0 0 2px white, 0 0 0 4px #FF2442;
+}
+
+.status .status-item {
+    width: fit-content;
+    text-align: center;
+}
+
+.status {
+    overflow-x: auto;
+    scrollbar-width: none;
+    overflow-x: scroll;
+    margin-left: 20%;
+}
+
+.status::-webkit-scrollbar {
+    display: none;
+}

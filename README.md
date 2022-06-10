@@ -22,7 +22,7 @@
 + [Authors Info](#author-Info)
 
 ## Description
-<P> A Clone Web Application for Instagram built with Python and Django where user (s) can Upload Pictures,View Posts,Like and Comment on various postin Instagram </p>
+<P> A Clone Web Application for Instagram built with Python and Django where user (s) can Upload Pictures,View Posts,Like and Comment on various post in Instagram </p>
 
 ## User Stories
 <P>As a User I would like to:</p>
@@ -34,7 +34,7 @@
 * Like a picture and leave a comment on it.
 
 ## Live Link
-
+<https://instanancy.herokuapp.com/>
 
 ## Installation
 

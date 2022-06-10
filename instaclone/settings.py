@@ -27,10 +27,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-bf8*&#ep6-=8$i662u9^8hgq=)^xd6*30kdf@#kq_xou)%_b!x'
+MODE=config("MODE", default="dev")
+SECRET_KEY = config('SECRET_KEY')
+DEBUG = config('DEBUG', default=False, cast=bool)
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# SECURITY WARNING: don't run with debug turned on in production
 
 ALLOWED_HOSTS = []
 
@@ -48,12 +49,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'cloudinary',
 ]
-
-import cloudinary
-import cloudinary.uploader
-import cloudinary.api
-
-
 
 cloudinary.config( 
     cloud_name = "dzjhja6ei", 
@@ -91,10 +86,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'instaclone.wsgi.application'
-
-MODE=config("MODE", default="dev")
-SECRET_KEY = config('SECRET_KEY')
-DEBUG = config('DEBUG', default=False, cast=bool)
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 if config('MODE')=="dev":

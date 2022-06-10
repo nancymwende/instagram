@@ -6,7 +6,11 @@
     </div>
     <div class="navigation-search-container">
         <i class="fa fa-search"></i>
-        <input class="search-field" type="text" placeholder="Search">
+        <form action="{% url 'search'%}" role="search">
+        {% csrf_token %}
+        <input class="search-field" type="search" placeholder="Search" name="profile" >
+        <button type="submit"></button>
+        </form>
         <div class="search-container">
             <div class="search-container-box">
                 <div class="search-results">

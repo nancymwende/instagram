@@ -1,5 +1,5 @@
 {% extends 'base.html'%}
-{% load bootstrap5 %}
+{% load django_bootstrap5 %}
 {%load static%}
 <link rel="stylesheet" href="https://fonts.google.com/">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
@@ -16,6 +16,23 @@
 {% for image in image %}
 <img src="{{image.picture.url}}" width="40%" height="50%" alt="" style="margin-left: 30%;">
 <p>{{image.image_caption}}</p>
+            <div class="d-flex justify-content-center form_container">
+                <form method="POST" action="">
+                    {% csrf_token %}
+                    <div class="input-group mb-3">
+                        <div class="input-group-append">
+                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                        </div>
+                        <input type="text" class="form-control">
+                    </div>
+                    <div class="d-flex justify-content-center mt-3 login_container">
+                        <input class="btn login_btn" type="submit" value="Comment" >
+                    </div>
+                </form>
+
+            </div>
+            {{comment.comment}}
+
 <a class="navigation-link notifica">
     {% if image in liked_images%}
     <a class="navigation-link notifica" href="{% url 'like' image_id=image.id%}"><i class="far fa-heart"></i></i></a>
@@ -23,11 +40,14 @@
     <a class="navigation-link notifica" href="{% url 'like' image_id=image.id%}"><i class="far fa-heart"></i></a>
     {% endif %}
     <a class="navigation-link notifica" href=""><i class="fas fa-save" aria-hidden="true"></i></a>
+    <p>hello</p>
     <p class="ps-2">{{ image.posts.count }} like{{ image.posts.count | pluralize}}</p>
     <p class="ps-2">{{ image.image_caption|truncatechars:30 }}<span
             class="text-muted small">{%if image.image_caption|wordcount > 5 %}more{%endif%}</span>
+            
     </p>
 </a>
+
 {% endfor %}
 
 {%endblock%}

@@ -1,0 +1,9 @@
+{% if profile %}
+<p>found{{items|length}} profile of searched_term{{message}}</p>
+{% for search in items %}
+<p>{{search.name}}</p>
+{%endfor%}
+{% else %}
+<p>found 0 profiles of searched_term</p>
+{%endif%}
+

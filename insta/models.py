@@ -16,7 +16,7 @@ def save_user_profile(sender, instance, **kwargs):
 
 # Create your models here.
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, related_name='profile',unique=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile',)
     profile_photo = CloudinaryField('profile_photo')
     bio = models.TextField(max_length=100,blank=True)
     name = models.CharField(blank=True, max_length=150)
@@ -31,8 +31,8 @@ class Profile(models.Model):
             self.delete()
             
     @classmethod
-    def get_profile_by_user(cls, user):
-        profile = cls.objects.filter(user=user)
+    def get_profile_by_user(cls, searched_term):
+        profile = cls.objects.filter(name__icontains=searched_term)
         return profile 
 
     
@@ -63,3 +63,7 @@ class Follow(models.Model):
     user = models.OneToOneField(User, related_name='following',on_delete = models.CASCADE)
     follower = models.ForeignKey(User, related_name='followers',on_delete = models.CASCADE)
 
+class Comments(models.Model):
+    comment = models.TextField(max_length=100,blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    image = models.ForeignKey(Image,on_delete=models.CASCADE)

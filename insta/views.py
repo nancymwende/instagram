@@ -1,8 +1,8 @@
 # Create your views here.
 from django.shortcuts import get_object_or_404, redirect, render
 from .models import Image
-from .forms import CreateUserForm,NewPostForm
-from .models import Image,Profile,Likes
+from .forms import CreateUserForm,NewPostForm,CommentForm
+from .models import Image,Profile,Likes,Comments
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
@@ -12,13 +12,14 @@ from django.urls import reverse
 def index(request):
         # imports photos and save it in database
     image = Image.objects.all()
+    commentform = CommentForm()
+    comment = Comments.objects.all()
         # adding context 
-    ctx = {'image':image}
+    ctx = {'image':image,'commentform':commentform,'comment':comment}
     return render(request, 'index.html',ctx)
 
 def register(request):
     form = CreateUserForm()
-    
     
     if request.method == 'POST':
         form = CreateUserForm(request.POST)
@@ -55,3 +56,28 @@ def addPost(request):
     else:
         form = NewPostForm()
     return render(request, 'addPost.html', {"user":current_user,"form":form})
+    
+
+def search(request):
+    if "profile" in request.GET and request.GET["profile"]:
+        searched_item=request.GET["profile"]
+        items= Profile.get_profile_by_user(searched_item)
+        message = f"{searched_item}"
+
+
+        return render(request, 'search.html',{"message":message,"items":items})
+    else:
+        message = "Kindly input a search term to get any results"
+        return render(request, 'search.html',{"message":message})
+        
+def show(request):
+    try:
+        profiles = Profile.objects.all()
+        
+        context = {}
+        context['profiles'] = profiles
+
+    except:
+        ValueError
+        raise 'Error'
+    return render(request, "search.html",context)        

@@ -83,7 +83,19 @@ def show(request):
         raise 'Error'
     return render(request, "search.html",context)        
     
-    
+def comment(request, post_id):
+    form = CommentForm()
+    current_user = request.user.profile
+    image = Image.objects.get(id=post_id)
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.profile = current_user
+            comment.image = image
+            comment.save()
+        return redirect('index')
+    return redirect(request, 'index.html')    
     
 def follow(request, user_id):
     user = request.user
@@ -95,3 +107,4 @@ def follow(request, user_id):
         new_follow = Follow(follower=user, followed=other_user)
         new_follow.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))    
+    

@@ -8,7 +8,7 @@ urlpatterns = [
     path('like/<image_id>', views.like, name='like'),
     path('show',views.show,name='show'),
     path('search',views.search,name='search'),
-    path('comment/<post_id>',views.new_comment, name = 'comment'),
+    path('comment/<image_id>',views.comment, name = 'comment'),
     path('follow/<user_id>', views.follow, name='follow'),
-    path('like/<post_id>', views.like, name='like'),
+    path('like/<image_id>', views.like, name='like'),
 ]

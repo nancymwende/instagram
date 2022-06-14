@@ -1,10 +1,11 @@
 # Create your views here.
 from django.shortcuts import get_object_or_404, redirect, render
-from .models import Image
+from .models import Follow, Image,Comments,Likes
 from .forms import CreateUserForm,NewPostForm,CommentForm
-from .models import Image,Profile,Likes,Comments
+from .models import Image,Profile,Likes,Comments,Follow
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.contrib.auth.models import User
 
 
 
@@ -81,3 +82,16 @@ def show(request):
         ValueError
         raise 'Error'
     return render(request, "search.html",context)        
+    
+    
+    
+def follow(request, user_id):
+    user = request.user
+    other_user = User.objects.get(id=user_id)
+    follow = Follow.objects.filter(follower=user, followed=other_user)
+    if follow:
+        follow.delete()
+    else:
+        new_follow = Follow(follower=user, followed=other_user)
+        new_follow.save()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))    

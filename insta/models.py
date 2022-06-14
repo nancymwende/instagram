@@ -54,7 +54,24 @@ class Image(models.Model):
     def delete_image(self):
         self.delete()
         
-
+    @classmethod
+    def update_post(cls,id,post):
+        posted = Image.objects.filter(id=id).update(post = post)
+        return posted    
+        
+    @classmethod
+    def get_images(cls):
+        image = Image.objects.all()
+        return image
+        
+        
+    @classmethod
+    def get_image_by_id(cls):
+        image = Image.objects.filter(id=Image.id)
+        return image 
+        
+    def __str__(self):
+        return self.content    
 class Likes(models.Model):
     user = models.ForeignKey(User, related_name='posts', on_delete=models.CASCADE)
     image = models.ForeignKey(Image, related_name='posts', on_delete=models.CASCADE)
@@ -62,8 +79,23 @@ class Likes(models.Model):
 class Follow(models.Model):
     user = models.OneToOneField(User, related_name='following',on_delete = models.CASCADE)
     follower = models.ForeignKey(User, related_name='followers',on_delete = models.CASCADE)
+    def __str__(self):
+        return self.follower
 
 class Comments(models.Model):
     comment = models.TextField(max_length=100,blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     image = models.ForeignKey(Image,on_delete=models.CASCADE)
+    date_posted = models.DateTimeField(auto_now_add=True)
+    
+    
+    def save_comment(self):
+        self.save()
+        
+    def delete_comment(self):
+        self.delete()
+        
+    @classmethod
+    def get_comment(cls):
+        comment = Comments.objects.all()
+        return comment        

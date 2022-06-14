@@ -14,8 +14,24 @@ class NewPostForm(forms.ModelForm):
         exclude = ['user', 'date_posted']
         widgets = {
             'tags': forms.CheckboxSelectMultiple(),
-        }  
+        }
+        
 class CommentForm(forms.Form):
     class Meta:
         model = Comments
+        exclude = ['user', 'date_posted']
         fields = ['comment']
+        widgets = {
+            'tags': forms.CheckboxSelectMultiple(),
+        }
+
+
+class UpdateProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['user','bio']
+        
+class ProfileUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['bio','profile_photo']

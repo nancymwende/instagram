@@ -1,5 +1,6 @@
 # Create your views here.
 from django.shortcuts import get_object_or_404, redirect, render
+from requests import post
 from .models import Follow, Image,Comments,Likes,Profile,Post
 from .forms import CreateUserForm,NewPostForm,CommentForm,LoginForm
 from django.http import HttpResponseRedirect
@@ -16,9 +17,8 @@ def index(request):
         # imports photos and save it in database
     image = Image.objects.all()
     commentform = CommentForm()
-    comment = Comments.objects.all()
         # adding context 
-    ctx = {'image':image,'commentform':commentform,'comment':comment}
+    ctx = {'image':image,'commentform':commentform}
     return render(request, 'index.html',ctx)
 
 def register(request):

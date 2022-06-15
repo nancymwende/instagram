@@ -62,8 +62,7 @@ class Image(models.Model):
     @classmethod
     def get_images(cls):
         image = Image.objects.all()
-        return image
-        
+        return image    
         
     @classmethod
     def get_image_by_id(cls):
@@ -114,3 +113,5 @@ class Comments(models.Model):
     def get_comment(cls):
         comment = Comments.objects.all()
         return comment        
+        
+        

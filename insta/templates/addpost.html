@@ -3,7 +3,7 @@
 {% block content %}
 <br><br><br><br>
 
-    <form action="{% url 'image' %}" method="post" class="w-25 ms-5">
+    <form action="{% url 'image' %}" method="post" enctype="multipart/form-data" class="w-25 ms-5">
         {%csrf_token%}
         {% bootstrap_form form%}
         {{form.errors}}

@@ -6,9 +6,9 @@ from .forms import CreateUserForm,NewPostForm,CommentForm,LoginForm
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth.models import User
-from django.contrib.auth import login,logout,authenticate
+from django.contrib.auth import logout,authenticate
 from django.contrib.auth.decorators import login_required
-
+from django.contrib.auth import login as logins
 
 
 # Create your views here.
@@ -36,9 +36,9 @@ def register(request):
             
             new_user = authenticate(username=form.cleaned_data['username'],
                                     password=form.cleaned_data['password1'],)
-            login(request, new_user)
+            logins(request, new_user)
             return redirect('index')    
-    return render(request, 'registration_form.html',{'form':form},)
+    return render(request, 'registration/registration_form.html',{'form':form},)
     
 
 
@@ -70,7 +70,7 @@ def like(request, image_id):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))    
     
     
-
+@login_required
 def get_image_by_id(request):
     image = Post.objects.all()
     comment = Post.objects.filter().all()

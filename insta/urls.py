@@ -1,10 +1,14 @@
-from django.urls import path
+from django.urls import path,include
 from . import views
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('', views.index,name = 'index'),
-    path('register', views.register, name = 'register'),
-    path('login', views.login, name = 'login'),
+    path('signup', views.register, name = 'sign-up'),
+    path('image',views.get_image_by_id,name ='image'),
+    # path('login', views.login, name = 'login'),
+    path('accounts/',include('registration.backends.simple.urls')),
+    path('login/', auth_views.LoginView.as_view(),name='login'),
     path('like/<image_id>', views.like, name='like'),
     path('show',views.show,name='show'),
     path('search',views.search,name='search'),

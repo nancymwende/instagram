@@ -1,4 +1,4 @@
-{% extends 'base.html'%}
+{% extends 'registration/base.html'%}
 {% block content %}
 
 <title>Login</title>
@@ -34,7 +34,7 @@
                     </div>
 
                     <div class="d-flex justify-content-center mt-3 login_container">
-                        <input class="btn login_btn" type="submit" value="Login">
+                        <input class="btn login_btn" type="submit" value="Login" name="Login">
                     </div>
                 </form>
 
@@ -42,7 +42,7 @@
 
             <div class="mt-4">
                 <div class="d-flex justify-content-center links">
-                    Don't have an account? <a href="{% url 'register' %}" class="ml-2">Sign Up</a>
+                    Don't have an account? <a href="/accounts/register/" class="ml-2">Sign Up</a>
                 </div>
 
             </div>

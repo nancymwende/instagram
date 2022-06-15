@@ -1,15 +1,17 @@
 # Create your views here.
 from django.shortcuts import get_object_or_404, redirect, render
-from .models import Follow, Image,Comments,Likes
-from .forms import CreateUserForm,NewPostForm,CommentForm
-from .models import Image,Profile,Likes,Comments,Follow
+from .models import Follow, Image,Comments,Likes,Profile,Post
+from .forms import CreateUserForm,NewPostForm,CommentForm,LoginForm
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth.models import User
+from django.contrib.auth import login,logout,authenticate
+from django.contrib.auth.decorators import login_required
 
 
 
 # Create your views here.
+# @login_required
 def index(request):
         # imports photos and save it in database
     image = Image.objects.all()
@@ -25,11 +27,35 @@ def register(request):
     if request.method == 'POST':
         form = CreateUserForm(request.POST)
         if form.is_valid():
-            form.save()
-    return render(request, 'register.html',{'form':form})
+            new_user = form.save()
+            
+            user_profile=Profile(
+                user=new_user,
+            )
+            #user_profile.save_profile()
+            
+            new_user = authenticate(username=form.cleaned_data['username'],
+                                    password=form.cleaned_data['password1'],)
+            login(request, new_user)
+            return redirect('index')    
+    return render(request, 'registration_form.html',{'form':form},)
     
+
+
 def login(request):
-    return render(request, 'login.html')
+    form = LoginForm()
+    
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password1')
+        
+        user = authenticate(request, username = username, password = password)
+        
+        if user is not None:
+            login(request,user)
+            return redirect('index')
+    return render(request, 'login.html',{'form':form})
+
     
 
 def like(request, image_id):
@@ -45,18 +71,20 @@ def like(request, image_id):
     
     
 
-def addPost(request):
+def get_image_by_id(request):
+    image = Post.objects.all()
+    comment = Post.objects.filter().all()
     current_user = request.user
     if request.method == 'POST':
         form = NewPostForm(request.POST, request.FILES)
         if form.is_valid():
-            post = form.save(commit=False)
-            post.user = current_user
-            post.save()
+            image = form.save(commit=False)
+            image.user = current_user
+            image.save()
         return redirect('index')
     else:
         form = NewPostForm()
-    return render(request, 'addPost.html', {"user":current_user,"form":form})
+    return render(request,"addpost.html", {"image":image,"comment":comment,"form": form})
     
 
 def search(request):

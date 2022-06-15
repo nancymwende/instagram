@@ -5,14 +5,7 @@ import datetime as dt
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-@receiver(post_save, sender=User)
-def create_user_profile(sender, instance, created, **kwargs):
-    if created:
-        Profile.objects.create(user=instance)
-        
-@receiver(post_save, sender=User)
-def save_user_profile(sender, instance, **kwargs):
-    instance.profile.save()
+
 
 # Create your models here.
 class Profile(models.Model):
@@ -34,14 +27,21 @@ class Profile(models.Model):
     def get_profile_by_user(cls, searched_term):
         profile = cls.objects.filter(name__icontains=searched_term)
         return profile 
-
+# @receiver(post_save, sender=User)
+# def create_user_profile(sender, instance, created, **kwargs):
+#     if created:
+#         Profile.objects.create(user=instance)
+        
+# @receiver(post_save, sender=User)
+# def save_user_profile(sender, instance, **kwargs):
+#     instance.insta_profile.save()
     
 class Image(models.Model):
     picture = CloudinaryField('picture')
     image_name = models.CharField(max_length=50)
     image_caption = models.TextField(max_length= 100)
     posted_at = models.DateTimeField(auto_now_add=True)
-    profile = models.ForeignKey(Profile,on_delete = models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     
     
     def total_likes(self):
@@ -71,10 +71,25 @@ class Image(models.Model):
         return image 
         
     def __str__(self):
-        return self.content    
+        return self.content 
+        
 class Likes(models.Model):
     user = models.ForeignKey(User, related_name='posts', on_delete=models.CASCADE)
     image = models.ForeignKey(Image, related_name='posts', on_delete=models.CASCADE)
+
+class Post(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE,null=True)
+    picture = models.ImageField(upload_to='feed_images',null=True,)
+    caption = models.TextField(null=True)
+    likes = models.PositiveIntegerField(default=0)
+@classmethod
+def get_images(cls):
+        images = Post.objects.all()
+        return images
+def __str__(self):
+    return str(self.caption)
+
 
 class Follow(models.Model):
     user = models.OneToOneField(User, related_name='following',on_delete = models.CASCADE)
